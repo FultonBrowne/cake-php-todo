@@ -4,31 +4,61 @@
  * @var iterable<\App\Model\Entity\Task> $tasks
  */
 ?>
-<h1>Your Tasks</h1>
-<?= $this->Html->link("Add New Task", ["action" => "add"]) ?>
-<table>
-  <tr><th>Title</th><th>Done?</th><th>Actions</th></tr>
-  <?php foreach ($tasks as $task): ?>
+<h1 class="mb-4">Your Tasks</h1>
+
+<div class="mb-3">
+  <?= $this->Html->link(
+      "Add New Task",
+      ["action" => "add"],
+      ["class" => "btn btn-primary"]
+  ) ?>
+</div>
+
+<table class="table table-striped task-table">
+  <thead>
     <tr>
-      <td><?= h($task->title) ?></td>
-      <td><?= $task->is_done ? "Yes" : "No" ?></td>
-      <td>
-        <?php if (!$task->is_done): ?>
-          <?= $this->Form->postLink(
-              "Mark as Done",
-              ["action" => "complete", $task->id],
-              ["confirm" => "Mark this task as completed?"]
-          ) ?>
-        <?php else: ?>
-          <em>Completed</em>
-        <?php endif; ?>
-        <?= $this->Html->link("Edit", ["action" => "edit", $task->id]) ?>
-        <?= $this->Form->postLink(
-            "Delete",
-            ["action" => "delete", $task->id],
-            ["confirm" => "Are you sure?"]
-        ) ?>
-      </td>
+      <th>Title</th>
+      <th>Done?</th>
+      <th>Actions</th>
     </tr>
-  <?php endforeach; ?>
+  </thead>
+  <tbody>
+    <?php foreach ($tasks as $task): ?>
+      <tr class="<?= $task->is_done ? "completed-task" : "" ?>">
+        <td><?= h($task->title) ?></td>
+        <td>
+          <?php if ($task->is_done): ?>
+            <span class="badge bg-success">Yes</span>
+          <?php else: ?>
+            <span class="badge bg-secondary">No</span>
+          <?php endif; ?>
+        </td>
+        <td>
+          <?php if (!$task->is_done): ?>
+            <?= $this->Form->postLink(
+                "Mark as Done",
+                ["action" => "complete", $task->id],
+                [
+                    "class" => "btn btn-sm btn-success me-1",
+                    "confirm" => "Mark this task as completed?",
+                ]
+            ) ?>
+          <?php endif; ?>
+          <?= $this->Html->link(
+              "Edit",
+              ["action" => "edit", $task->id],
+              ["class" => "btn btn-sm btn-warning me-1"]
+          ) ?>
+          <?= $this->Form->postLink(
+              "Delete",
+              ["action" => "delete", $task->id],
+              [
+                  "class" => "btn btn-sm btn-danger",
+                  "confirm" => "Are you sure you want to delete this task?",
+              ]
+          ) ?>
+        </td>
+      </tr>
+    <?php endforeach; ?>
+  </tbody>
 </table>

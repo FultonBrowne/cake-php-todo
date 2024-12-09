@@ -1,0 +1,10 @@
+.completed-task td {
+    text-decoration: line-through;
+    color: #6c757d;
+}
+
+.task-table {
+    background: #fff;
+    border-radius: 5px;
+    padding: 20px;
+}

@@ -18,41 +18,69 @@ $cakeDescription = "CakePHP: the rapid development php framework"; ?>
 <!DOCTYPE html>
 <html>
 <head>
-  <?= $this->Html->charset() ?>
-  <title><?= $this->fetch("title") ?></title>
-  <?= $this->Html->css("style.css") ?>
-  <?= $this->fetch("meta") ?>
-  <?= $this->fetch("css") ?>
-  <?= $this->fetch("script") ?>
+    <?= $this->Html->charset() ?>
+    <title><?= $this->fetch("title") ?></title>
+    <!-- Bootstrap CSS -->
+    <?= $this->Html->css(
+        "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    ) ?>
+    <?= $this->fetch("meta") ?>
+    <?= $this->fetch("css") ?>
+    <?= $this->fetch("script") ?>
+    <?= $this->Html->css("custom") ?>
 </head>
-<body>
-  <nav>
-    <?= $this->Html->link("Home", [
-        "controller" => "Pages",
-        "action" => "display",
-        "home",
-    ]) ?>
-    <?php if ($this->request->getAttribute("identity")): ?>
-      <?= $this->Html->link("Tasks", [
-          "controller" => "Tasks",
-          "action" => "index",
-      ]) ?>
-      <?= $this->Html->link("Logout", [
-          "controller" => "Users",
-          "action" => "logout",
-      ]) ?>
-    <?php else: ?>
-      <?= $this->Html->link("Login", [
-          "controller" => "Users",
-          "action" => "login",
-      ]) ?>
-      <?= $this->Html->link("Register", [
-          "controller" => "Users",
-          "action" => "register",
-      ]) ?>
-    <?php endif; ?>
-  </nav>
-  <?= $this->Flash->render() ?>
-  <?= $this->fetch("content") ?>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="<?= $this->Url->build(
+              "/"
+          ) ?>">My Todo App</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+              <?php if ($this->request->getAttribute("identity")): ?>
+                  <li class="nav-item"><?= $this->Html->link(
+                      "Tasks",
+                      ["controller" => "Tasks", "action" => "index"],
+                      ["class" => "nav-link"]
+                  ) ?></li>
+              <?php endif; ?>
+            </ul>
+            <ul class="navbar-nav ms-auto">
+              <?php if ($this->request->getAttribute("identity")): ?>
+                  <li class="nav-item"><?= $this->Html->link(
+                      "Logout",
+                      ["controller" => "Users", "action" => "logout"],
+                      ["class" => "nav-link"]
+                  ) ?></li>
+              <?php else: ?>
+                  <li class="nav-item"><?= $this->Html->link(
+                      "Login",
+                      ["controller" => "Users", "action" => "login"],
+                      ["class" => "nav-link"]
+                  ) ?></li>
+                  <li class="nav-item"><?= $this->Html->link(
+                      "Register",
+                      ["controller" => "Users", "action" => "register"],
+                      ["class" => "nav-link"]
+                  ) ?></li>
+              <?php endif; ?>
+            </ul>
+          </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <?= $this->Flash->render() ?>
+        <?= $this->fetch("content") ?>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <?= $this->Html->script(
+        "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    ) ?>
 </body>
 </html>
