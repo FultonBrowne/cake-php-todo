@@ -22,6 +22,8 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\View\Exception\MissingTemplateException;
 
+use Cake\Event\EventInterface;
+
 /**
  * Static content controller
  *
@@ -43,12 +45,19 @@ class PagesController extends AppController
      *   be found and not in debug mode.
      * @throws \Cake\View\Exception\MissingTemplateException In debug mode.
      */
+
+    public function initialize(): void
+    {
+        parent::initialize();
+        $this->loadComponent("Authentication.Authentication");
+    }
+
     public function display(string ...$path): ?Response
     {
         if (!$path) {
-            return $this->redirect('/');
+            return $this->redirect("/");
         }
-        if (in_array('..', $path, true) || in_array('.', $path, true)) {
+        if (in_array("..", $path, true) || in_array(".", $path, true)) {
             throw new ForbiddenException();
         }
         $page = $subpage = null;
@@ -59,15 +68,27 @@ class PagesController extends AppController
         if (!empty($path[1])) {
             $subpage = $path[1];
         }
-        $this->set(compact('page', 'subpage'));
+        $this->set(compact("page", "subpage"));
 
         try {
-            return $this->render(implode('/', $path));
+            return $this->render(implode("/", $path));
         } catch (MissingTemplateException $exception) {
-            if (Configure::read('debug')) {
+            if (Configure::read("debug")) {
                 throw $exception;
             }
             throw new NotFoundException();
         }
+    }
+
+    public function beforeFilter(EventInterface $event)
+    {
+        parent::beforeFilter($event);
+        // Allow access to the landing page without authentication
+        $this->Authentication->allowUnauthenticated(["landing"]);
+    }
+
+    public function landing()
+    {
+        // This will just render the landing template
     }
 }
