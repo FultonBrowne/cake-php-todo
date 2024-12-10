@@ -4,28 +4,45 @@
  * @var \App\Model\Entity\Task $task
  */
 ?>
-<div class="row">
-    <aside class="column">
-        <div class="side-nav">
-            <h4 class="heading"><?= __('Actions') ?></h4>
-            <?= $this->Form->postLink(
-                __('Delete'),
-                ['action' => 'delete', $task->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $task->id), 'class' => 'side-nav-item']
-            ) ?>
-            <?= $this->Html->link(__('List Tasks'), ['action' => 'index'], ['class' => 'side-nav-item']) ?>
-        </div>
-    </aside>
-    <div class="column column-80">
-        <div class="tasks form content">
-            <?= $this->Form->create($task) ?>
-            <fieldset>
-                <legend><?= __('Edit Task') ?></legend>
-                <?php
-                ?>
-            </fieldset>
-            <?= $this->Form->button(__('Submit')) ?>
-            <?= $this->Form->end() ?>
-        </div>
+<h1 class="mb-4">Edit Task</h1>
+<div class="card card-body">
+    <?= $this->Form->create($task) ?>
+    <div class="mb-3">
+        <?= $this->Form->control("title", [
+            "class" => "form-control",
+            "label" => ["class" => "form-label"],
+        ]) ?>
     </div>
+
+    <div class="mb-3">
+        <label class="form-label">Existing Tags</label>
+        <?= $this->Form->control("tags._ids", [
+            "type" => "select",
+            "multiple" => "checkbox",
+            "options" => $tags,
+            "label" => false,
+            "class" => "form-check-input",
+            "value" => array_map(fn($t) => $t->id, $task->tags), // pre-select current tags
+        ]) ?>
+    </div>
+
+    <div class="mb-3">
+        <?= $this->Form->control("new_tags", [
+            "type" => "text",
+            "label" => "Add New Tags (comma separated)",
+            "class" => "form-control",
+            "placeholder" => "e.g. Urgent, Follow-up",
+        ]) ?>
+    </div>
+
+    <div class="mb-3 form-check">
+        <?= $this->Form->control("is_done", [
+            "type" => "checkbox",
+            "class" => "form-check-input",
+            "label" => ["class" => "form-check-label", "text" => "Completed?"],
+        ]) ?>
+    </div>
+
+    <?= $this->Form->button("Save Changes", ["class" => "btn btn-primary"]) ?>
+    <?= $this->Form->end() ?>
 </div>

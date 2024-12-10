@@ -45,5 +45,11 @@ class TasksTable extends Table
             "foreignKey" => "user_id",
             "joinType" => "INNER",
         ]);
+
+        $this->belongsToMany("Tags", [
+            "joinTable" => "tasks_tags",
+            "foreignKey" => "task_id",
+            "targetForeignKey" => "tag_id",
+        ]);
     }
 }

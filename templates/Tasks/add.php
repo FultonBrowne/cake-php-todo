@@ -2,27 +2,40 @@
 /**
  * @var \App\View\AppView $this
  * @var \App\Model\Entity\Task $task
+ * @var iterable<\App\Model\Entity\Tag> $tags
  */
 ?>
-<h1 class="mb-4">Login</h1>
-<div class="card card-body" style="max-width: 400px; margin: 0 auto;">
-    <?= $this->Form->create() ?>
+<h1 class="mb-4">Add Task</h1>
+<div class="card card-body">
+    <?= $this->Form->create($task) ?>
     <div class="mb-3">
-        <?= $this->Form->control("email", [
-            "type" => "email",
+        <?= $this->Form->control("title", [
             "class" => "form-control",
             "label" => ["class" => "form-label"],
-            "placeholder" => "Enter your email",
+            "placeholder" => "Enter task title...",
         ]) ?>
     </div>
+
     <div class="mb-3">
-        <?= $this->Form->control("password", [
-            "type" => "password",
-            "class" => "form-control",
-            "label" => ["class" => "form-label"],
-            "placeholder" => "Enter your password",
+        <label class="form-label">Existing Tags</label>
+        <?= $this->Form->control("tags._ids", [
+            "type" => "select",
+            "multiple" => "checkbox",
+            "options" => $tags,
+            "label" => false,
+            "class" => "form-check-input",
         ]) ?>
     </div>
-    <?= $this->Form->button("Login", ["class" => "btn btn-primary w-100"]) ?>
+
+    <div class="mb-3">
+        <?= $this->Form->control("new_tags", [
+            "type" => "text",
+            "label" => "Add New Tags (comma separated)",
+            "class" => "form-control",
+            "placeholder" => "e.g. Urgent, Follow-up",
+        ]) ?>
+    </div>
+
+    <?= $this->Form->button("Save Task", ["class" => "btn btn-primary"]) ?>
     <?= $this->Form->end() ?>
 </div>
