@@ -20,67 +20,105 @@ $cakeDescription = "CakePHP: the rapid development php framework"; ?>
 <head>
     <?= $this->Html->charset() ?>
     <title><?= $this->fetch("title") ?></title>
-    <!-- Bootstrap CSS -->
-    <?= $this->Html->css(
-        "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-    ) ?>
-    <?= $this->fetch("meta") ?>
-    <?= $this->fetch("css") ?>
+
+    <!-- Add Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <?= $this->fetch("script") ?>
     <?= $this->Html->css("custom") ?>
 </head>
-<body class="bg-light">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="<?= $this->Url->build(
-              "/"
-          ) ?>">My Todo App</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
+<body class="bg-gray-50">
+    <nav class="bg-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="<?= $this->Url->build("/") ?>" class="text-white font-bold text-xl">
+                        My Todo App
+                    </a>
+                </div>
 
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav me-auto">
-              <?php if ($this->request->getAttribute("identity")): ?>
-                  <li class="nav-item"><?= $this->Html->link(
-                      "Tasks",
-                      ["controller" => "Tasks", "action" => "index"],
-                      ["class" => "nav-link"]
-                  ) ?></li>
-              <?php endif; ?>
-            </ul>
-            <ul class="navbar-nav ms-auto">
-              <?php if ($this->request->getAttribute("identity")): ?>
-                  <li class="nav-item"><?= $this->Html->link(
-                      "Logout",
-                      ["controller" => "Users", "action" => "logout"],
-                      ["class" => "nav-link"]
-                  ) ?></li>
-              <?php else: ?>
-                  <li class="nav-item"><?= $this->Html->link(
-                      "Login",
-                      ["controller" => "Users", "action" => "login"],
-                      ["class" => "nav-link"]
-                  ) ?></li>
-                  <li class="nav-item"><?= $this->Html->link(
-                      "Register",
-                      ["controller" => "Users", "action" => "register"],
-                      ["class" => "nav-link"]
-                  ) ?></li>
-              <?php endif; ?>
-            </ul>
-          </div>
+                <!-- Mobile menu button -->
+                <div class="flex md:hidden">
+                    <button type="button" class="text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="hidden md:block">
+                    <div class="flex items-center">
+                        <div class="flex-1 flex items-center justify-center">
+                            <?php if ($this->request->getAttribute("identity")): ?>
+                                <?= $this->Html->link(
+                                    "Tasks",
+                                    ["controller" => "Tasks", "action" => "index"],
+                                    ["class" => "text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"]
+                                ) ?>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="ml-4 flex items-center">
+                            <?php if ($this->request->getAttribute("identity")): ?>
+                                <?= $this->Html->link(
+                                    "Logout",
+                                    ["controller" => "Users", "action" => "logout"],
+                                    ["class" => "text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"]
+                                ) ?>
+                            <?php else: ?>
+                                <?= $this->Html->link(
+                                    "Login",
+                                    ["controller" => "Users", "action" => "login"],
+                                    ["class" => "text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"]
+                                ) ?>
+                                <?= $this->Html->link(
+                                    "Register",
+                                    ["controller" => "Users", "action" => "register"],
+                                    ["class" => "text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium"]
+                                ) ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile menu, show/hide based on menu state -->
+            <div class="md:hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <?php if ($this->request->getAttribute("identity")): ?>
+                        <?= $this->Html->link(
+                            "Tasks",
+                            ["controller" => "Tasks", "action" => "index"],
+                            ["class" => "text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"]
+                        ) ?>
+                    <?php endif; ?>
+
+                    <?php if ($this->request->getAttribute("identity")): ?>
+                        <?= $this->Html->link(
+                            "Logout",
+                            ["controller" => "Users", "action" => "logout"],
+                            ["class" => "text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"]
+                        ) ?>
+                    <?php else: ?>
+                        <?= $this->Html->link(
+                            "Login",
+                            ["controller" => "Users", "action" => "login"],
+                            ["class" => "text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"]
+                        ) ?>
+                        <?= $this->Html->link(
+                            "Register",
+                            ["controller" => "Users", "action" => "register"],
+                            ["class" => "text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium"]
+                        ) ?>
+                    <?php endif; ?>
+                </div>
+            </div>
         </div>
     </nav>
 
-    <div class="container mt-4">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
         <?= $this->Flash->render() ?>
         <?= $this->fetch("content") ?>
     </div>
-
-    <!-- Bootstrap JS -->
-    <?= $this->Html->script(
-        "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-    ) ?>
 </body>
 </html>

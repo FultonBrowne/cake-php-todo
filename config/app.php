@@ -1,6 +1,8 @@
 <?php
 
 use Cake\Cache\Engine\FileEngine;
+use Cake\Cache\Engine\RedisEngine;
+
 use Cake\Database\Connection;
 use Cake\Database\Driver\Mysql;
 use Cake\Log\Engine\FileLog;
@@ -96,39 +98,43 @@ return [
      */
     'Cache' => [
         'default' => [
-            'className' => FileEngine::class,
-            'path' => CACHE,
+            'className' => RedisEngine::class,
+            'prefix' => 'myapp_default_',
+            'host' => 'localhost',
+            'port' => 6379,
+            'duration' => '+1 hours',
+            'serialize' => true,
             'url' => env('CACHE_DEFAULT_URL', null),
         ],
 
-        /*
-         * Configure the cache used for general framework caching.
-         * Translation cache files are stored with this configuration.
-         * Duration will be set to '+2 minutes' in bootstrap.php when debug = true
-         * If you set 'className' => 'Null' core cache will be disabled.
-         */
-        '_cake_translations_' => [
-            'className' => FileEngine::class,
-            'prefix' => 'myapp_cake_translations_',
-            'path' => CACHE . 'persistent' . DS,
-            'serialize' => true,
+        '_cake_core_' => [
+            'className' => RedisEngine::class,
+            'prefix' => 'myapp_cake_core_',
+            'host' => 'localhost',
+            'port' => 6379,
             'duration' => '+1 years',
+            'serialize' => true,
             'url' => env('CACHE_CAKECORE_URL', null),
         ],
 
-        /*
-         * Configure the cache for model and datasource caches. This cache
-         * configuration is used to store schema descriptions, and table listings
-         * in connections.
-         * Duration will be set to '+2 minutes' in bootstrap.php when debug = true
-         */
         '_cake_model_' => [
-            'className' => FileEngine::class,
+            'className' => RedisEngine::class,
             'prefix' => 'myapp_cake_model_',
-            'path' => CACHE . 'models' . DS,
-            'serialize' => true,
+            'host' => 'localhost',
+            'port' => 6379,
             'duration' => '+1 years',
+            'serialize' => true,
             'url' => env('CACHE_CAKEMODEL_URL', null),
+        ],
+
+        '_cake_translations_' => [
+            'className' => RedisEngine::class,
+            'prefix' => 'myapp_cake_translations_',
+            'host' => 'localhost',
+            'port' => 6379,
+            'duration' => '+1 years',
+            'serialize' => true,
+            'url' => env('CACHE_CAKETRANSLATIONS_URL', null),
         ],
     ],
 
